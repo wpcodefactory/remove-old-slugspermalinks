@@ -3,7 +3,7 @@ Contributors: wpcodefactory, algoritmika, anbinder
 Tags: slugs manager, old slugs, regenerate slugs
 Requires at least: 3.5.1
 Tested up to: 6.1
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,7 +48,7 @@ No, you can disable the plugin.
 
 == Changelog ==
 
-= 2.6.2 - 08/11/2022 =
+= 2.6.2 - 09/11/2022 =
 * Tested up to: 6.1.
 * Readme.txt updated.
 * Deploy script added.
