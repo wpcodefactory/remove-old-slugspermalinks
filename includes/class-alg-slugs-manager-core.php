@@ -2,7 +2,7 @@
 /**
  * Slugs Manager - Core Class
  *
- * @version 2.5.1
+ * @version 2.6.5
  * @since   2.4.0
  *
  * @author  Algoritmika Ltd
@@ -13,6 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! class_exists( 'Alg_Slugs_Manager_Core' ) ) :
 
 class Alg_Slugs_Manager_Core {
+
+	/**
+	 * old_slugs_deleted_num.
+	 *
+	 * @since 2.6.5
+	 */
+	public $old_slugs_deleted_num;
 
 	/**
 	 * Constructor.

@@ -2,7 +2,7 @@
 /**
  * Slugs Manager - Main Class
  *
- * @version 2.6.0
+ * @version 2.6.5
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd
@@ -21,6 +21,13 @@ final class Alg_Slugs_Manager {
 	 * @since 2.3.0
 	 */
 	public $version = ALG_SLUGS_MANAGER_VERSION;
+
+	/**
+	 * core.
+	 *
+	 * @since 2.6.5
+	 */
+	public $core;
 
 	/**
 	 * @var   Alg_Slugs_Manager The single instance of the class
