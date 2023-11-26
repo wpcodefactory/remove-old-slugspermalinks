@@ -1,9 +1,9 @@
 === Slugs Manager: Delete Old Permalinks from WordPress Database ===
-Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
+Contributors: wpcodefactory, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: slugs manager, old slugs, regenerate slugs
 Requires at least: 3.5.1
 Tested up to: 6.4
-Stable tag: 2.6.6
+Stable tag: 2.6.7
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,10 @@ No, you can disable the plugin.
 1. Tools > Slugs Manager > Old Slugs.
 
 == Changelog ==
+
+= 2.6.7 - 26/11/2023 =
+* Tested up to: 6.4.
+* Update plugin title.
 
 = 2.6.5 - 06/11/2023 =
 * Dev - PHP 8.2 compatibility - "Creation of dynamic property is deprecated" notice fixed.
