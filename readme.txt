@@ -1,9 +1,9 @@
-=== Slugs Manager ===
+=== Slugs Manager: Delete Old Permalinks from WordPress Database ===
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: slugs manager, old slugs, regenerate slugs
 Requires at least: 3.5.1
-Tested up to: 6.3
-Stable tag: 2.6.5
+Tested up to: 6.4
+Stable tag: 2.6.6
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,7 @@ Plugin is based on this [code snippet](https://wpcodebook.com/snippets/delete-po
 
 ### &#127942; Premium Version ###
 
-[Slugs Manager Pro](https://wpfactory.com/item/slugs-manager-wordpress-plugin/) allows you to:
+[Slugs Manager: Delete Old Permalinks from WordPress Database Pro](https://wpfactory.com/item/slugs-manager-wordpress-plugin/) allows you to:
 
 * Set old slugs to be cleared **periodically** (every minute, hourly, twice daily, daily, weekly).
 * Set old slugs to be cleared **automatically**, when post is saved.
