@@ -2,7 +2,7 @@
 /**
  * Slugs Manager - Main Class
  *
- * @version 2.6.5
+ * @version 2.7.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd
@@ -61,7 +61,7 @@ final class Alg_Slugs_Manager {
 	 *
 	 * @access  public
 	 *
-	 * @todo    [maybe] (dev) move *all* to `is_admin()`?
+	 * @todo    (dev) move *all* to `is_admin()`?
 	 */
 	function __construct() {
 
@@ -126,7 +126,7 @@ final class Alg_Slugs_Manager {
 	/**
 	 * action_links.
 	 *
-	 * @version 2.6.0
+	 * @version 2.7.0
 	 * @since   2.0.0
 	 *
 	 * @param   mixed $links
@@ -134,10 +134,10 @@ final class Alg_Slugs_Manager {
 	 */
 	function action_links( $links ) {
 		$custom_links = array();
-		$custom_links[] = '<a href="' . admin_url( 'tools.php?page=alg-slugs-manager' ) . '">' . __( 'Settings', 'remove-old-slugspermalinks' ) . '</a>';
+		$custom_links[] = '<a href="' . admin_url( 'tools.php?page=alg-slugs-manager' ) . '">' . esc_html__( 'Settings', 'remove-old-slugspermalinks' ) . '</a>';
 		if ( 'remove-old-slugs.php' === basename( ALG_SLUGS_MANAGER_FILE ) ) {
 			$custom_links[] = '<a target="_blank" style="font-weight: bold; color: green;" href="https://wpfactory.com/item/slugs-manager-wordpress-plugin/">' .
-				__( 'Go Pro', 'remove-old-slugspermalinks' ) . '</a>';
+				esc_html__( 'Go Pro', 'remove-old-slugspermalinks' ) . '</a>';
 		}
 		return array_merge( $custom_links, $links );
 	}

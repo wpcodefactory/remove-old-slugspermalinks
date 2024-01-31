@@ -3,7 +3,7 @@
 Plugin Name: Slugs Manager: Delete Old Permalinks from WordPress Database
 Plugin URI: https://wpfactory.com/item/slugs-manager-wordpress-plugin/
 Description: Plugin helps you manage slugs (permalinks) in WordPress, for example, remove old slugs from database.
-Version: 2.6.7
+Version: 2.7.0
 Author: WPFactory
 Author URI: https://wpfactory.com
 Text Domain: remove-old-slugspermalinks
@@ -28,7 +28,7 @@ if ( 'remove-old-slugs.php' === basename( __FILE__ ) ) {
 	}
 }
 
-defined( 'ALG_SLUGS_MANAGER_VERSION' ) || define( 'ALG_SLUGS_MANAGER_VERSION', '2.6.7' );
+defined( 'ALG_SLUGS_MANAGER_VERSION' ) || define( 'ALG_SLUGS_MANAGER_VERSION', '2.7.0' );
 
 defined( 'ALG_SLUGS_MANAGER_FILE' ) || define( 'ALG_SLUGS_MANAGER_FILE', __FILE__ );
 

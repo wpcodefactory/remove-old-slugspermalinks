@@ -1,9 +1,9 @@
 === Slugs Manager: Delete Old Permalinks from WordPress Database ===
-Contributors: wpcodefactory, anbinder, karzin, omardabbas, kousikmukherjeeli
+Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: slugs manager, old slugs, regenerate slugs
 Requires at least: 3.5.1
 Tested up to: 6.4
-Stable tag: 2.6.7
+Stable tag: 2.7.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,7 +38,7 @@ Plugin is based on this [code snippet](https://wpcodebook.com/snippets/delete-po
 
 == Frequently Asked Questions ==
 
-= Do I need to keep the plugin enabled once I run its tools (e.g. removed old slugs)? =
+= Do I need to keep the plugin enabled once I run its tools (e.g., removed old slugs)? =
 
 No, you can disable the plugin.
 
@@ -48,9 +48,20 @@ No, you can disable the plugin.
 
 == Changelog ==
 
+= 2.7.0 - 31/01/2024 =
+* Dev - Old Slugs - User permissions check and nonce added.
+* Dev - Automatic Clean Ups - User permissions check and nonce added.
+* Dev - Regenerate Slugs - User permissions check and nonce added.
+* Dev - Flush Rewrite Rules - Nonce added.
+* Dev - Code refactoring.
+* Plugin contributors updated.
+
 = 2.6.7 - 26/11/2023 =
+* Plugin contributors updated.
+
+= 2.6.6 - 26/11/2023 =
 * Tested up to: 6.4.
-* Update plugin title.
+* Plugin name updated.
 
 = 2.6.5 - 06/11/2023 =
 * Dev - PHP 8.2 compatibility - "Creation of dynamic property is deprecated" notice fixed.
@@ -79,7 +90,7 @@ No, you can disable the plugin.
 
 = 2.5.0 - 29/03/2021 =
 * Dev - Plugin renamed (was "Remove Old Slugs").
-* Dev - Remove Old Slugs - It is now possible to delete only certain old slugs (i.e. vs all at once).
+* Dev - Remove Old Slugs - It is now possible to delete only certain old slugs (i.e., vs all at once).
 * Dev - Localisation - `load_plugin_textdomain()` function moved to the `init` hook.
 * Dev - Admin settings restyled; descriptions updated.
 * Dev - Code refactoring.

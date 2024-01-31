@@ -2,13 +2,13 @@
 /**
  * Slugs Manager - Settings Class
  *
- * @version 2.6.0
+ * @version 2.7.0
  * @since   2.4.0
  *
  * @author  Algoritmika Ltd
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Alg_Slugs_Manager_Settings' ) ) :
 
@@ -20,7 +20,7 @@ class Alg_Slugs_Manager_Settings {
 	 * @version 2.5.0
 	 * @since   2.4.0
 	 *
-	 * @todo    [next] (dev) core refactoring?
+	 * @todo    (dev) core refactoring?
 	 */
 	function __construct() {
 		add_action( 'admin_menu',   array( $this, 'add_plugin_options_page' ) );
@@ -34,8 +34,8 @@ class Alg_Slugs_Manager_Settings {
 	 * @version 2.5.0
 	 * @since   2.5.0
 	 *
-	 * @todo    [later] (dev) make it better, like the standard WP checkbox
-	 * @todo    [maybe] (dev) move it to a separate JS file?
+	 * @todo    (dev) make it better, like the standard WP checkbox
+	 * @todo    (dev) move it to a separate JS file?
 	 */
 	function add_select_all_script() {
 		?><script>
@@ -55,30 +55,64 @@ class Alg_Slugs_Manager_Settings {
 	/**
 	 * save_settings.
 	 *
-	 * @version 2.4.0
+	 * @version 2.7.0
 	 * @since   2.4.0
+	 *
+	 * @todo    (fix) `alg_slugs_manager_save_settings_crons`: `cron_unschedule_the_event()`: when "current time" > "event time" the event is not unscheduled?
 	 */
 	function save_settings() {
+
+		if (
+			isset( $_POST['alg_remove_old_slugs_on_save_post'] ) ||
+			isset( $_POST['alg_remove_old_slugs_crons'] )
+		) {
+			// Check user permissions
+			if ( ! current_user_can( 'manage_options' ) ) {
+				add_action( 'admin_notices', array( alg_slugs_manager()->core, 'admin_notice_invalid_user' ) );
+				return;
+			}
+		}
+
+		// Clean Up on Save Post
 		if ( isset( $_POST['alg_remove_old_slugs_on_save_post'] ) ) {
+			// Check nonce
+			if (
+				! isset( $_REQUEST['alg_sm_on_save_post_nonce'] ) ||
+				! wp_verify_nonce( $_REQUEST['alg_sm_on_save_post_nonce'], 'alg-sm-on-save-post' )
+			) {
+				add_action( 'admin_notices', array( alg_slugs_manager()->core, 'admin_notice_invalid_nonce' ) );
+				return;
+			}
 			update_option( 'alg_remove_old_slugs_on_save_post_enabled', sanitize_text_field( $_POST['alg_remove_old_slugs_on_save_post_enabled'] ) );
 		}
+
+		// Scheduled Clean Ups
 		if ( isset( $_POST['alg_remove_old_slugs_crons'] ) ) {
+			// Check nonce
+			if (
+				! isset( $_REQUEST['alg_sm_crons_nonce'] ) ||
+				! wp_verify_nonce( $_REQUEST['alg_sm_crons_nonce'], 'alg-sm-crons' )
+			) {
+				add_action( 'admin_notices', array( alg_slugs_manager()->core, 'admin_notice_invalid_nonce' ) );
+				return;
+			}
 			update_option( 'alg_remove_old_slugs_cron_interval', sanitize_text_field( $_POST['alg_remove_old_slugs_crons_interval'] ) );
 			do_action( 'alg_slugs_manager_save_settings_crons' );
 		}
+
 	}
 
 	/*
 	 * add_plugin_options_page.
 	 *
-	 * @version 2.5.0
+	 * @version 2.7.0
 	 * @since   1.0.0
 	 */
 	function add_plugin_options_page() {
 		add_submenu_page(
 			'tools.php',
-			__( 'Slugs Manager', 'remove-old-slugspermalinks' ),
-			__( 'Slugs Manager', 'remove-old-slugspermalinks' ),
+			esc_html__( 'Slugs Manager', 'remove-old-slugspermalinks' ),
+			esc_html__( 'Slugs Manager', 'remove-old-slugspermalinks' ),
 			'manage_options',
 			'alg-slugs-manager',
 			array( $this, 'create_admin_page' )
@@ -88,17 +122,17 @@ class Alg_Slugs_Manager_Settings {
 	/*
 	 * create_admin_page.
 	 *
-	 * @version 2.5.1
+	 * @version 2.7.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [next] (dev) split it into a separate sections
+	 * @todo    (dev) split it into a separate sections
 	 */
 	function create_admin_page() {
 		$html  = '';
 
 		// Header
 		$html .= '<div class="wrap">';
-		$html .= '<h1>' . __( 'Slugs Manager', 'remove-old-slugspermalinks' ) . '</h1>';
+		$html .= '<h1>' . esc_html__( 'Slugs Manager', 'remove-old-slugspermalinks' ) . '</h1>';
 
 		// Old slugs
 		$html .= $this->display_old_slugs_table();
@@ -121,7 +155,7 @@ class Alg_Slugs_Manager_Settings {
 	/**
 	 * display_old_slugs_table.
 	 *
-	 * @version 2.6.0
+	 * @version 2.7.0
 	 * @since   2.4.0
 	 */
 	function display_old_slugs_table() {
@@ -168,9 +202,10 @@ class Alg_Slugs_Manager_Settings {
 				'</p>';
 			$html .= '<p>' . sprintf( __( '%s old slug(s) found.', 'remove-old-slugspermalinks' ), '<strong>' . $num_old_slugs . '</strong>' ) . '</p>' .
 				'<form method="post" action="">' .
-				$buttons .
-				$this->get_table_html( $table_data, array( 'table_class' => 'widefat striped', 'table_heading_type' => 'none' ) ) .
-				$buttons .
+					$buttons .
+					$this->get_table_html( $table_data, array( 'table_class' => 'widefat striped', 'table_heading_type' => 'none' ) ) .
+					$buttons .
+					'<input type="hidden" name="alg_sm_remove_old_slugs_nonce" value="' . esc_attr( wp_create_nonce( 'alg-sm-remove-old-slugs' ) ) . '">' .
 				'</form>';
 		} else {
 			// No old slugs found
@@ -186,7 +221,7 @@ class Alg_Slugs_Manager_Settings {
 	/*
 	 * display_automatic_clean_ups_options.
 	 *
-	 * @version 2.5.0
+	 * @version 2.7.0
 	 * @since   2.4.0
 	 */
 	function display_automatic_clean_ups_options() {
@@ -223,6 +258,7 @@ class Alg_Slugs_Manager_Settings {
 		$form_crons .= '</select>' . ' ';
 		$form_crons .= '<input class="button-primary" type="submit" name="alg_remove_old_slugs_crons" value="' . __( 'Save', 'remove-old-slugspermalinks' ) . '"' .
 			apply_filters( 'alg_slugs_manager_core_settings', 'disabled' ). '/>';
+		$form_crons .= '<input type="hidden" name="alg_sm_crons_nonce" value="' . esc_attr( wp_create_nonce( 'alg-sm-crons' ) ) . '">';
 		$form_crons .= '</form>';
 		$cron_info = '';
 		if ( wp_next_scheduled( 'alg_remove_old_slugs_cron' ) ) {
@@ -241,6 +277,7 @@ class Alg_Slugs_Manager_Settings {
 		$form_on_save_post .= '</select>' . ' ';
 		$form_on_save_post .= '<input class="button-primary" type="submit" name="alg_remove_old_slugs_on_save_post" value="' .
 			__( 'Save', 'remove-old-slugspermalinks' ) . '"' . apply_filters( 'alg_slugs_manager_core_settings', 'disabled' ). '/>';
+		$form_on_save_post .= '<input type="hidden" name="alg_sm_on_save_post_nonce" value="' . esc_attr( wp_create_nonce( 'alg-sm-on-save-post' ) ) . '">';
 		$form_on_save_post .= '</form>';
 		// Final output
 		$table_data = array(
@@ -264,10 +301,10 @@ class Alg_Slugs_Manager_Settings {
 	/*
 	 * display_regenerate_slugs_options.
 	 *
-	 * @version 2.6.0
+	 * @version 2.7.0
 	 * @since   2.4.0
 	 *
-	 * @todo    [now] (desc) `$post_types`: better description, styling?
+	 * @todo    (desc) `$post_types`: better description, styling?
 	 */
 	function display_regenerate_slugs_options() {
 		$html  = '';
@@ -292,6 +329,7 @@ class Alg_Slugs_Manager_Settings {
 			' onclick="return confirm(\'' . __( 'There is no undo for this action.', 'remove-old-slugspermalinks' ) . ' ' .
 			__( 'Are you sure?', 'remove-old-slugspermalinks' ) . '\')"' . ' value="' . __( 'Regenerate', 'remove-old-slugspermalinks' ) . '"' .
 			apply_filters( 'alg_slugs_manager_core_settings', 'disabled' ). '/>';
+		$form_regenerate .= '<input type="hidden" name="alg_sm_regenerate_slugs_nonce" value="' . esc_attr( wp_create_nonce( 'alg-sm-regenerate-slugs' ) ) . '">';
 		$form_regenerate .= '</form>';
 		// Final output
 		$table_data = array(
@@ -309,19 +347,20 @@ class Alg_Slugs_Manager_Settings {
 	/*
 	 * display_extra_tools_options.
 	 *
-	 * @version 2.5.1
+	 * @version 2.7.0
 	 * @since   2.5.1
 	 *
-	 * @todo    [next] (desc) Flush rewrite rules: better desc, e.g. "what is a rewrite rule?", "why do we need to flush them?", etc.
+	 * @todo    (desc) Flush rewrite rules: better desc, e.g., "what is a rewrite rule?", "why do we need to flush them?", etc.
 	 */
 	function display_extra_tools_options() {
-		$html = '<hr>' . '<h2>' . '<span class="dashicons dashicons-admin-tools" style="color:gray;"></span> ' . __( 'Extra Tools', 'remove-old-slugspermalinks' ) . '</h2>';
+		$html = '<hr>' . '<h2>' . '<span class="dashicons dashicons-admin-tools" style="color:gray;"></span> ' . esc_html__( 'Extra Tools', 'remove-old-slugspermalinks' ) . '</h2>';
 		$table_data = array(
 			array(
-				'<strong>' . __( 'Flush rewrite rules', 'remove-old-slugspermalinks' ) . '</strong>',
-				'<em>' . __( 'Remove rewrite rules and then recreate rewrite rules.', 'remove-old-slugspermalinks' ) . '</em>',
+				'<strong>' . esc_html__( 'Flush Rewrite Rules', 'remove-old-slugspermalinks' ) . '</strong>',
+				'<em>' . esc_html__( 'Remove rewrite rules and then recreate rewrite rules.', 'remove-old-slugspermalinks' ) . '</em>',
 				'<form method="post" action="">' .
-					'<input class="button-primary" type="submit" name="alg_sm_flush_rewrite_rules" value="' . __( 'Flush', 'remove-old-slugspermalinks' ) . '">' .
+					'<input class="button-primary" type="submit" name="alg_sm_flush_rewrite_rules" value="' . esc_html__( 'Flush', 'remove-old-slugspermalinks' ) . '">' .
+					'<input type="hidden" name="alg_sm_flush_rewrite_rules_nonce" value="' . esc_attr( wp_create_nonce( 'alg-sm-flush-rewrite-rules' ) ) . '">' .
 				'</form>',
 			),
 		);
@@ -333,7 +372,7 @@ class Alg_Slugs_Manager_Settings {
 	/**
 	 * get_table_html.
 	 *
-	 * @version 2.4.0
+	 * @version 2.7.0
 	 * @since   2.0.0
 	 */
 	function get_table_html( $data, $args = array() ) {
@@ -359,9 +398,7 @@ class Alg_Slugs_Manager_Settings {
 					' class="' . $args['columns_classes'][ $column_number ] . '"' : '';
 				$column_style = ( ! empty( $args['columns_styles'] )  && isset( $args['columns_styles'][ $column_number ] ) )  ?
 					' style="' . $args['columns_styles'][ $column_number ]  . '"' : '';
-				$html        .= '<' . $th_or_td . $column_class . $column_style . '>';
-				$html        .= $value;
-				$html        .= '</' . $th_or_td . '>';
+				$html        .= "<{$th_or_td}{$column_class}{$column_style}>{$value}</{$th_or_td}>";
 			}
 			$html .= '</tr>';
 		}
