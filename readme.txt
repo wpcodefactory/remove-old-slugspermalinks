@@ -137,6 +137,9 @@ No, you can disable the plugin.
 
 == Changelog ==
 
+= 2.7.2 - 17/05/2024 =
+* readme.txt content update.
+
 = 2.7.1 - 16/05/2024 =
 * Tested up to: 6.5.
 * readme.txt content update.
