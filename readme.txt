@@ -2,8 +2,8 @@
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: slugs manager, old slugs, regenerate slugs, seo, delete slugs
 Requires at least: 3.5.1
-Tested up to: 6.5
-Stable tag: 2.7.4
+Tested up to: 6.6
+Stable tag: 2.7.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -136,6 +136,9 @@ No, you can disable the plugin.
 1. Tools > Slugs Manager > Old Slugs.
 
 == Changelog ==
+
+= 2.7.5 - 31/07/2024 =
+* Tested up to: 6.6.
 
 = 2.7.4 - 18/05/2024 =
 * readme.txt content update.
